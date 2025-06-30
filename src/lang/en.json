@@ -1191,6 +1191,12 @@
   "FIELD_KNOCKBACK_VEL_Y_DESC": "The vertical velocity applied when the player is in the knockback state.",
   "FIELD_KNOCKBACK_FRAMES": "Knockback Frames",
   "FIELD_KNOCKBACK_FRAMES_DESC": "The number of frames the player will be in the knockback state.",
+  "FIELD_PLATFORMER_VEL_X": "Platformer Velocity X",
+  "FIELD_PLATFORMER_VEL_X_DESC": "The horizontal velocity of the player in the platformer scene.",
+  "FIELD_PLATFORMER_VEL_Y": "Platformer Velocity Y",
+  "FIELD_PLATFORMER_VEL_Y_DESC": "The vertical velocity of the player in the platformer scene.",
+  "FIELD_PLATFORMER_IS_GROUNDED": "Platformer Is Grounded",
+  "FIELD_PLATFORMER_IS_GROUNDED_DESC": "Whether the player is currently on the ground in the platformer scene.",
 
   "// 7": "Asset Viewer ---------------------------------------------",
   "ASSET_SEARCH": "Search...",
