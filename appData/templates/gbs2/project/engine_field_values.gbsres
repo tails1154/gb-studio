@@ -4,6 +4,34 @@
     {
       "id": "fade_style",
       "value": 0
+    },
+    {
+      "id": "FEAT_PLATFORM_DROP_THROUGH",
+      "value": 1
+    },
+    {
+      "id": "FEAT_PLATFORM_DOUBLE_JUMP",
+      "value": 1
+    },
+    {
+      "id": "plat_extra_jumps",
+      "value": 0
+    },
+    {
+      "id": "FEAT_PLATFORM_COYOTE_TIME",
+      "value": 1
+    },
+    {
+      "id": "FEAT_PLATFORM_KNOCKBACK",
+      "value": 1
+    },
+    {
+      "id": "FEAT_PLATFORM_BLANK",
+      "value": 1
+    },
+    {
+      "id": "FEAT_PLATFORM_DASH",
+      "value": 1
     }
   ]
 }
