@@ -8,8 +8,8 @@ const subGroups = {
 
 const fields = [
   {
-    key: "state",
-    label: l10n("FIELD_STATE"),
+    key: "event",
+    label: l10n("FIELD_EVENT"),
     type: "select",
     defaultValue: "fallStart",
     options: [
@@ -57,7 +57,7 @@ const valuesMap = {
 const compile = (input, helpers) => {
   const { _addComment, _stackPushConst, _callNative, _stackPop } = helpers;
 
-  const callbackLabel = valuesMap[input.state] ?? valuesMap.fallStart;
+  const callbackLabel = valuesMap[input.event] ?? valuesMap.fallStart;
 
   _addComment("Remove Platformer State Script");
   _stackPushConst(callbackLabel);

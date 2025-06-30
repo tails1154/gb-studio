@@ -8,8 +8,8 @@ const subGroups = {
 
 const fields = [
   {
-    key: "state",
-    label: l10n("FIELD_STATE"),
+    key: "event",
+    label: l10n("FIELD_EVENT"),
     type: "select",
     defaultValue: "fallStart",
     options: [
@@ -84,7 +84,7 @@ const compile = (input, helpers) => {
     _stackPop,
   } = helpers;
 
-  const callbackLabel = valuesMap[input.state] ?? valuesMap.fallStart;
+  const callbackLabel = valuesMap[input.event] ?? valuesMap.fallStart;
 
   const scriptRef = _compileSubScript(
     "state",
