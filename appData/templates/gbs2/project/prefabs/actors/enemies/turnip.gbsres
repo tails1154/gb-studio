@@ -93,19 +93,11 @@
         ],
         "false": [
           {
-            "id": "92572552-1832-487c-9651-217891451fa9",
-            "command": "EVENT_ACTOR_SET_POSITION",
+            "command": "EVENT_PLATFORMER_STATE_SET",
             "args": {
-              "actorId": "player",
-              "x": {
-                "type": "number",
-                "value": 52
-              },
-              "y": {
-                "type": "number",
-                "value": 13
-              }
-            }
+              "state": "knockback"
+            },
+            "id": "1b834d1f-57a4-4aaa-94a3-8858b83e0009"
           },
           {
             "id": "d219381b-3baa-4099-8d4e-d1b2c78d102b",
@@ -192,8 +184,7 @@
               "moveType": "horizontal",
               "useCollisions": true,
               "collideWith": [
-                "walls",
-                "actors"
+                "walls"
               ]
             }
           }
@@ -215,8 +206,7 @@
               "moveType": "horizontal",
               "useCollisions": true,
               "collideWith": [
-                "walls",
-                "actors"
+                "walls"
               ]
             }
           }
