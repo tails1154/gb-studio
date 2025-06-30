@@ -101,7 +101,7 @@ const compile = (input, helpers) => {
     input.actorId,
     input.x,
     input.y,
-    input.useCollisions,
+    input.collideWith,
     input.moveType,
     input.units,
   );

@@ -750,7 +750,7 @@ export const dummyProjectResources: ProjectResources = {
 };
 
 export const dummyCompressedProjectResources = compressProjectResources(
-  dummyProjectResources
+  dummyProjectResources,
 );
 
 export const getDummyCompiledFont = async (): Promise<PrecompiledFontData> => {
@@ -766,7 +766,7 @@ export const getDummyCompiledFont = async (): Promise<PrecompiledFontData> => {
         plugin: undefined,
       },
     ],
-    `${projectTemplatesRoot}/gbhtml`
+    `${projectTemplatesRoot}/gbhtml`,
   );
 
   return compiledFontsRet[0];

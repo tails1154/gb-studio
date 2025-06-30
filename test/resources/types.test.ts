@@ -211,7 +211,7 @@ describe("TypeBox Schemas", () => {
     };
 
     expect(() =>
-      Value.Decode(CompressedSceneResource, validScene)
+      Value.Decode(CompressedSceneResource, validScene),
     ).not.toThrow();
     expect(() => Value.Decode(CompressedSceneResource, invalidScene)).toThrow();
   });
@@ -290,10 +290,10 @@ describe("TypeBox Schemas", () => {
     };
 
     expect(() =>
-      Value.Decode(CompressedBackgroundResource, validBackground)
+      Value.Decode(CompressedBackgroundResource, validBackground),
     ).not.toThrow();
     expect(() =>
-      Value.Decode(CompressedBackgroundResource, invalidBackground)
+      Value.Decode(CompressedBackgroundResource, invalidBackground),
     ).toThrow();
   });
 
@@ -761,10 +761,10 @@ describe("TypeBox Schemas", () => {
     };
 
     expect(() =>
-      Value.Decode(EngineFieldValuesResource, validFieldValues)
+      Value.Decode(EngineFieldValuesResource, validFieldValues),
     ).not.toThrow();
     expect(() =>
-      Value.Decode(EngineFieldValuesResource, invalidFieldValues)
+      Value.Decode(EngineFieldValuesResource, invalidFieldValues),
     ).toThrow();
   });
 
