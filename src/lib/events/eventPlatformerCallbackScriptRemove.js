@@ -6,33 +6,25 @@ const subGroups = {
   EVENT_GROUP_ENGINE_FIELDS: "GAMETYPE_PLATFORMER",
 };
 
-const fields = [
-  {
-    key: "event",
-    label: l10n("FIELD_EVENT"),
-    type: "select",
-    defaultValue: "fallStart",
-    options: [
-      ["fallStart", l10n("FIELD_FALL_START")],
-      ["fallEnd", l10n("FIELD_FALL_END")],
-      ["groundStart", l10n("FIELD_GROUND_START")],
-      ["groundEnd", l10n("FIELD_GROUND_END")],
-      ["jumpStart", l10n("FIELD_JUMP_START")],
-      ["jumpEnd", l10n("FIELD_JUMP_END")],
-      ["dashStart", l10n("FIELD_DASH_START")],
-      ["dashEnd", l10n("FIELD_DASH_END")],
-      ["ladderStart", l10n("FIELD_LADDER_START")],
-      ["ladderEnd", l10n("FIELD_LADDER_END")],
-      ["wallStart", l10n("FIELD_WALL_START")],
-      ["wallEnd", l10n("FIELD_WALL_END")],
-      ["knockbackStart", l10n("FIELD_KNOCKBACK_START")],
-      ["knockbackEnd", l10n("FIELD_KNOCKBACK_END")],
-      ["blankStart", l10n("FIELD_BLANK_START")],
-      ["blankEnd", l10n("FIELD_BLANK_END")],
-      ["dashReady", l10n("FIELD_DASH_READY")],
-    ],
-  },
-];
+const labelsMap = {
+  fallStart: l10n("FIELD_FALL_START"),
+  fallEnd: l10n("FIELD_FALL_END"),
+  groundStart: l10n("FIELD_GROUND_START"),
+  groundEnd: l10n("FIELD_GROUND_END"),
+  jumpStart: l10n("FIELD_JUMP_START"),
+  jumpEnd: l10n("FIELD_JUMP_END"),
+  dashStart: l10n("FIELD_DASH_START"),
+  dashReady: l10n("FIELD_DASH_READY"),
+  dashEnd: l10n("FIELD_DASH_END"),
+  ladderStart: l10n("FIELD_LADDER_START"),
+  ladderEnd: l10n("FIELD_LADDER_END"),
+  wallStart: l10n("FIELD_WALL_START"),
+  wallEnd: l10n("FIELD_WALL_END"),
+  knockbackStart: l10n("FIELD_KNOCKBACK_START"),
+  knockbackEnd: l10n("FIELD_KNOCKBACK_END"),
+  blankStart: l10n("FIELD_BLANK_START"),
+  blankEnd: l10n("FIELD_BLANK_END"),
+};
 
 const valuesMap = {
   fallStart: "PLATFORM_FALL_INIT",
@@ -42,8 +34,8 @@ const valuesMap = {
   jumpStart: "PLATFORM_JUMP_INIT",
   jumpEnd: "PLATFORM_JUMP_END",
   dashStart: "PLATFORM_DASH_INIT",
-  dashEnd: "PLATFORM_DASH_END",
   dashReady: "PLATFORM_DASH_READY",
+  dashEnd: "PLATFORM_DASH_END",
   ladderStart: "PLATFORM_LADDER_INIT",
   ladderEnd: "PLATFORM_LADDER_END",
   wallStart: "PLATFORM_WALL_INIT",
@@ -53,6 +45,22 @@ const valuesMap = {
   blankStart: "PLATFORM_BLANK_INIT",
   blankEnd: "PLATFORM_BLANK_END",
 };
+
+const autoLabel = (_, input) => {
+  return l10n("EVENT_REMOVE_PLATFORMER_CALLBACK_SCRIPT_LABEL", {
+    event: labelsMap[input.event] || l10n("FIELD_FALL_START"),
+  });
+};
+
+const fields = [
+  {
+    key: "event",
+    label: l10n("FIELD_EVENT"),
+    type: "select",
+    defaultValue: "fallStart",
+    options: Object.entries(labelsMap),
+  },
+];
 
 const compile = (input, helpers) => {
   const { _addComment, _stackPushConst, _callNative, _stackPop } = helpers;
@@ -67,6 +75,8 @@ const compile = (input, helpers) => {
 
 module.exports = {
   id,
+  description: l10n("EVENT_REMOVE_PLATFORMER_CALLBACK_SCRIPT_DESC"),
+  autoLabel,
   groups,
   subGroups,
   fields,
