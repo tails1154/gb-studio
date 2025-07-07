@@ -5,7 +5,10 @@ import {
   migrateFrom420r2To420r3EngineFields,
   migrateFrom420r2To420r3Event,
 } from "lib/project/migration/versions/410to420";
-import { ScriptEvent } from "shared/lib/entities/entitiesTypes";
+import {
+  EngineFieldValue,
+  ScriptEvent,
+} from "shared/lib/entities/entitiesTypes";
 import { CompressedProjectResources } from "shared/lib/resources/types";
 import { dummyCompressedProjectResources } from "../../dummydata";
 
@@ -288,6 +291,17 @@ describe("migrateFrom420r2To420r3Event", () => {
 });
 
 describe("migrateFrom420r2To420r3EngineFields", () => {
+  const getFieldValue = (
+    values: { engineFieldValues: EngineFieldValue[] },
+    id: string,
+  ) => {
+    return (
+      values.engineFieldValues.find(
+        (field: EngineFieldValue) => field.id === id,
+      )?.value || null
+    );
+  };
+
   test("should double the shooter_scroll_speed value", () => {
     const resources: CompressedProjectResources = {
       ...dummyCompressedProjectResources,
@@ -300,10 +314,9 @@ describe("migrateFrom420r2To420r3EngineFields", () => {
       },
     };
     const migrated = migrateFrom420r2To420r3EngineFields(resources);
-    expect(migrated.engineFieldValues.engineFieldValues).toEqual([
-      { id: "shooter_scroll_speed", value: 10 },
-      { id: "other_field", value: 10 },
-    ]);
+    expect(
+      getFieldValue(migrated.engineFieldValues, "shooter_scroll_speed"),
+    ).toEqual(10);
   });
 
   test("should not modify other engine fields", () => {
@@ -315,8 +328,71 @@ describe("migrateFrom420r2To420r3EngineFields", () => {
       },
     };
     const migrated = migrateFrom420r2To420r3EngineFields(resources);
+    expect(getFieldValue(migrated.engineFieldValues, "other_field")).toEqual(
+      10,
+    );
+  });
+
+  test("should set new enabled flag defaults to false matching previous default behaviour", () => {
+    const resources: CompressedProjectResources = {
+      ...dummyCompressedProjectResources,
+      engineFieldValues: {
+        ...dummyCompressedProjectResources.engineFieldValues,
+        engineFieldValues: [],
+      },
+    };
+    const migrated = migrateFrom420r2To420r3EngineFields(resources);
     expect(migrated.engineFieldValues.engineFieldValues).toEqual([
-      { id: "other_field", value: 10 },
+      {
+        id: "FEAT_PLATFORM_COYOTE_TIME",
+        value: 0,
+      },
+      {
+        id: "FEAT_PLATFORM_DROP_THROUGH",
+        value: 0,
+      },
+      {
+        id: "FEAT_PLATFORM_KNOCKBACK",
+        value: 0,
+      },
+      {
+        id: "FEAT_PLATFORM_BLANK",
+        value: 0,
+      },
+    ]);
+  });
+
+  test("should not set flag defaults to false when value is already set", () => {
+    const resources: CompressedProjectResources = {
+      ...dummyCompressedProjectResources,
+      engineFieldValues: {
+        ...dummyCompressedProjectResources.engineFieldValues,
+        engineFieldValues: [
+          {
+            id: "FEAT_PLATFORM_COYOTE_TIME",
+            value: 1,
+          },
+        ],
+      },
+    };
+    const migrated = migrateFrom420r2To420r3EngineFields(resources);
+    expect(migrated.engineFieldValues.engineFieldValues).toEqual([
+      {
+        id: "FEAT_PLATFORM_COYOTE_TIME",
+        value: 1,
+      },
+      {
+        id: "FEAT_PLATFORM_DROP_THROUGH",
+        value: 0,
+      },
+      {
+        id: "FEAT_PLATFORM_KNOCKBACK",
+        value: 0,
+      },
+      {
+        id: "FEAT_PLATFORM_BLANK",
+        value: 0,
+      },
     ]);
   });
 });

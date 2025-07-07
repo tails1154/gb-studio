@@ -87,24 +87,45 @@ export const migrateFrom420r2To420r3Event: ScriptEventMigrationFn = (
 
 export const migrateFrom420r2To420r3EngineFields: ProjectResourcesMigrationFn =
   (resources) => {
+    const engineFieldValues = resources.engineFieldValues.engineFieldValues.map(
+      (fieldValue) => {
+        if (fieldValue.id === "shooter_scroll_speed") {
+          return {
+            ...fieldValue,
+            value:
+              typeof fieldValue.value === "number" ? fieldValue.value * 2 : 0,
+          };
+        }
+        return fieldValue;
+      },
+    );
+
+    const hasFieldValue = (id: string) => {
+      return engineFieldValues.some((fieldValue) => fieldValue.id === id);
+    };
+
+    const setDefaultFieldValue = (
+      id: string,
+      value: string | number | undefined,
+    ) => {
+      if (!hasFieldValue(id)) {
+        engineFieldValues.push({
+          id: id,
+          value,
+        });
+      }
+    };
+
+    setDefaultFieldValue("FEAT_PLATFORM_COYOTE_TIME", 0);
+    setDefaultFieldValue("FEAT_PLATFORM_DROP_THROUGH", 0);
+    setDefaultFieldValue("FEAT_PLATFORM_KNOCKBACK", 0);
+    setDefaultFieldValue("FEAT_PLATFORM_BLANK", 0);
+
     return {
       ...resources,
       engineFieldValues: {
         ...resources.engineFieldValues,
-        engineFieldValues: resources.engineFieldValues.engineFieldValues.map(
-          (fieldValue) => {
-            if (fieldValue.id === "shooter_scroll_speed") {
-              return {
-                ...fieldValue,
-                value:
-                  typeof fieldValue.value === "number"
-                    ? fieldValue.value * 2
-                    : 0,
-              };
-            }
-            return fieldValue;
-          },
-        ),
+        engineFieldValues,
       },
     };
   };

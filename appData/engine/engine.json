@@ -435,7 +435,7 @@
       "group": "GAMETYPE_PLATFORMER",
       "type": "checkbox",
       "cType": "define",
-      "defaultValue": 0,
+      "defaultValue": 1,
       "isHeading": true,
       "indent": 1,
       "conditions": [
@@ -679,7 +679,7 @@
       "type": "checkbox",
       "cType": "define",
       "isHeading": true,
-      "defaultValue": 0
+      "defaultValue": 1 
     },
     {
       "key": "plat_drop_through_active",
@@ -1113,7 +1113,7 @@
       "type": "checkbox",
       "cType": "define",
       "isHeading": true,
-      "defaultValue": 0
+      "defaultValue": 1
     },
     {
       "key": "plat_knockback_vel_x",
@@ -1183,7 +1183,7 @@
       "type": "checkbox",
       "cType": "define",
       "isHeading": true,
-      "defaultValue": 0
+      "defaultValue": 1
     },
     {
       "key": "plat_blank_grav",
