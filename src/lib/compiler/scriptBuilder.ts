@@ -1437,7 +1437,7 @@ class ScriptBuilder {
 
   _rpn = () => {
     const output: string[] = [];
-    const stack: number[] = [];
+    let rpnStackSize = 0;
 
     const rpnCmd = (
       cmd: string,
@@ -1456,12 +1456,12 @@ class ScriptBuilder {
     const rpn = {
       ref: (variable: ScriptBuilderStackVariable) => {
         rpnCmd(".R_REF", variable);
-        stack.push(0);
+        rpnStackSize++;
         return rpn;
       },
       refInd: (variable: ScriptBuilderStackVariable) => {
         rpnCmd(".R_REF_IND", variable);
-        stack.push(0);
+        rpnStackSize++;
         return rpn;
       },
       refVariable: (variable: ScriptBuilderVariable) => {
@@ -1474,12 +1474,12 @@ class ScriptBuilder {
       },
       refSet: (variable: ScriptBuilderStackVariable) => {
         rpnCmd(".R_REF_SET", variable);
-        stack.pop();
+        rpnStackSize--;
         return rpn;
       },
       refSetInd: (variable: ScriptBuilderStackVariable) => {
         rpnCmd(".R_REF_SET_IND", variable);
-        stack.pop();
+        rpnStackSize--;
         return rpn;
       },
       refSetVariable: (variable: ScriptBuilderVariable) => {
@@ -1492,28 +1492,29 @@ class ScriptBuilder {
       },
       refMem: (type: RPNMemType, address: string) => {
         rpnCmd(".R_REF_MEM", type, `_${address}`);
+        rpnStackSize++;
         return rpn;
       },
       int8: (value: number | string) => {
         rpnCmd(".R_INT8", value);
-        stack.push(0);
+        rpnStackSize++;
         return rpn;
       },
       int16: (value: number | string) => {
         rpnCmd(".R_INT16", value);
-        stack.push(0);
+        rpnStackSize++;
         return rpn;
       },
       intConstant: (value: string) => {
         const symbol = this.getConstantSymbol(value);
         rpnCmd(".R_INT16", symbol);
-        stack.push(0);
+        rpnStackSize++;
         return rpn;
       },
       operator: (op: ScriptBuilderRPNOperation) => {
         rpnCmd(".R_OPERATOR", op);
         if (!rpnUnaryOperators.includes(op)) {
-          stack.pop();
+          rpnStackSize--;
         }
         return rpn;
       },
@@ -1523,9 +1524,7 @@ class ScriptBuilder {
         output.forEach((cmd: string) => {
           this.output.push(cmd);
         });
-        stack.forEach((_value: number) => {
-          this.stackPtr++;
-        });
+        this.stackPtr += rpnStackSize;
       },
     };
 
