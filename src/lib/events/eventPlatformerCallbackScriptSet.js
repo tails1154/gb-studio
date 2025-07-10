@@ -24,6 +24,10 @@ const labelsMap = {
   knockbackEnd: l10n("FIELD_KNOCKBACK_END"),
   blankStart: l10n("FIELD_BLANK_START"),
   blankEnd: l10n("FIELD_BLANK_END"),
+  runStart: l10n("FIELD_RUN_START"),
+  runEnd: l10n("FIELD_RUN_END"),
+  floatStart: l10n("FIELD_FLOAT_START"),
+  floatEnd: l10n("FIELD_FLOAT_END"),
 };
 
 const valuesMap = {
@@ -44,6 +48,10 @@ const valuesMap = {
   knockbackEnd: "PLATFORM_KNOCKBACK_END",
   blankStart: "PLATFORM_BLANK_INIT",
   blankEnd: "PLATFORM_BLANK_END",
+  runStart: "PLATFORM_RUN_INIT",
+  runEnd: "PLATFORM_RUN_END",
+  floatStart: "PLATFORM_FLOAT_INIT",
+  floatEnd: "PLATFORM_FLOAT_END",
 };
 
 const autoLabel = (_, input) => {

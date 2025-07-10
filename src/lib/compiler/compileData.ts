@@ -118,10 +118,6 @@ import {
   ScriptEvent,
   TilesetData,
 } from "shared/lib/entities/entitiesTypes";
-import type {
-  EngineFieldSchema,
-  SceneTypeSchema,
-} from "store/features/engine/engineState";
 import type { Reference } from "components/forms/ReferencesSelect";
 import type {
   MusicDriverSetting,
