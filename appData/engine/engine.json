@@ -162,20 +162,6 @@
       "isHeading": true
     },
     {
-      "key": "plat_camera_deadzone_x",
-      "sceneType": "PLATFORM",
-      "label": "FIELD_CAMERA_DEADZONE_X",
-      "description": "FIELD_CAMERA_DEADZONE_X_DESC",
-      "group": "GAMETYPE_PLATFORMER",
-      "type": "slider",
-      "cType": "BYTE",
-      "editUnits": "px",
-      "defaultValue": 4,
-      "min": 0,
-      "max": 48,
-      "indent": 1
-    },
-    {
       "key": "plat_camera_block",
       "sceneType": "PLATFORM",
       "label": "FIELD_KEEP_WITHIN_SCREEN_BOUNDS",
