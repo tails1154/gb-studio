@@ -93,6 +93,7 @@ describe("TypeBox Schemas", () => {
       isPinned: false,
       persistent: true,
       collisionGroup: "",
+      collisionExtraFlags: [],
       prefabId: "",
       prefabScriptOverrides: {},
       script: [],

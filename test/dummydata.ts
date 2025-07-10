@@ -134,6 +134,7 @@ export const dummyActorNormalized: ActorNormalized = {
   isPinned: false,
   persistent: false,
   collisionGroup: "",
+  collisionExtraFlags: [],
   prefabScriptOverrides: {},
   script: [],
   startScript: [],
@@ -382,6 +383,7 @@ export const dummyActorResource: ActorResource = {
   isPinned: false,
   persistent: true,
   collisionGroup: "",
+  collisionExtraFlags: [],
   prefabScriptOverrides: {},
   script: [],
   startScript: [],
@@ -478,6 +480,7 @@ export const dummyActorPrefabResource: ActorPrefabResource = {
   animate: false,
   persistent: false,
   collisionGroup: "",
+  collisionExtraFlags: [],
 };
 
 export const dummyActorPrefabNormalized: ActorPrefabNormalized =

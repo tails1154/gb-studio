@@ -85,6 +85,7 @@ import { calculateTextBoxHeight } from "shared/lib/helpers/dialogue";
 import { chunkTextOnWaitCodes } from "shared/lib/text/textCodes";
 import {
   pxToSubpx,
+  pxToSubpxVel,
   subpxShiftForUnits,
   subpxSnapMaskForUnits,
   tileToSubpx,
@@ -417,13 +418,19 @@ const toASMDir = (direction: string) => {
 
 const toASMMoveFlags = (
   moveType: string,
-  useCollisions: boolean,
+  useCollisions: boolean | Array<"walls" | "actors">,
   relative?: boolean,
   relativeUnits?: DistanceUnitType,
 ) => {
   return unionFlags(
     ([] as string[]).concat(
-      useCollisions ? ".ACTOR_ATTR_CHECK_COLL" : [],
+      useCollisions === true ? ".ACTOR_ATTR_CHECK_COLL" : [],
+      Array.isArray(useCollisions) && useCollisions.includes("walls")
+        ? ".ACTOR_ATTR_CHECK_COLL_WALLS"
+        : [],
+      Array.isArray(useCollisions) && useCollisions.includes("actors")
+        ? ".ACTOR_ATTR_CHECK_COLL_ACTORS"
+        : [],
       moveType === "horizontal" ? ".ACTOR_ATTR_H_FIRST" : [],
       moveType === "diagonal" ? ".ACTOR_ATTR_DIAGONAL" : [],
       relative && relativeUnits === "pixels"
@@ -1596,10 +1603,11 @@ class ScriptBuilder {
   ) => {
     for (const rpnOp of rpnOps) {
       switch (rpnOp.type) {
-        case "number": {
+        case "number":
+        case "numberSymbol": {
           rpn.int16(rpnOp.value ?? 0);
           break;
-        }
+        }     
         case "constant": {
           rpn.intConstant(rpnOp.value);
           break;
@@ -2922,7 +2930,7 @@ extern void __mute_mask_${symbol};
     actorId: string,
     valueX: ScriptValue,
     valueY: ScriptValue,
-    useCollisions: boolean,
+    collideWith: boolean | Array<"walls" | "actors">,
     moveType: ScriptBuilderMoveType,
     units: DistanceUnitType = "tiles",
   ) => {
@@ -2957,11 +2965,10 @@ extern void __mute_mask_${symbol};
     this._performValueRPN(rpn, rpnOpsY, localsLookup);
     rpn.refSet(this._localRef(actorRef, 2));
 
-    rpn.int16(toASMMoveFlags(moveType, useCollisions));
+    rpn.int16(toASMMoveFlags(moveType, collideWith));
     rpn.refSet(this._localRef(actorRef, 3));
 
     rpn.stop();
-
     this._addComment(`-- Move Actor`);
     this.actorSetById(actorId);
     this._actorMoveTo(actorRef);
@@ -3008,7 +3015,7 @@ extern void __mute_mask_${symbol};
     actorId: string,
     valueX: ScriptValue,
     valueY: ScriptValue,
-    useCollisions: boolean,
+    collideWith: boolean | Array<"walls" | "actors">,
     moveType: ScriptBuilderMoveType,
     units: DistanceUnitType = "tiles",
   ) => {
@@ -3053,11 +3060,10 @@ extern void __mute_mask_${symbol};
     this._performValueRPN(rpn, rpnOpsY, localsLookup2);
     rpn.refSet(this._localRef(actorRef, 2));
 
-    rpn.int16(toASMMoveFlags(moveType, useCollisions, true, units));
+    rpn.int16(toASMMoveFlags(moveType, collideWith, true, units));
     rpn.refSet(this._localRef(actorRef, 3));
 
     rpn.stop();
-
     this._addComment(`-- Move Actor`);
     this.actorSetById(actorId);
     this._actorMoveTo(actorRef);
@@ -3653,13 +3659,13 @@ extern void __mute_mask_${symbol};
     const { scene } = this.options;
     if (scene.type === "PLATFORM") {
       this._addComment("Player Bounce");
-      let value = pxToSubpx(-0x400);
+      let value = pxToSubpxVel(-0x400);
       if (height === "low") {
-        value = pxToSubpx(-0x200);
+        value = pxToSubpxVel(-0x200);
       } else if (height === "high") {
-        value = pxToSubpx(-0x600);
+        value = pxToSubpxVel(-0x600);
       }
-      this._setConstMemInt16("pl_vel_y", value);
+      this._setConstMemInt16("plat_vel_y", value);
       this._addNL();
     }
   };
@@ -6100,7 +6106,10 @@ extern void __mute_mask_${symbol};
     const engineField = engineFields[key];
     if (engineField !== undefined && engineField.key) {
       const cType = engineField.cType;
-      const numberValue = Number(engineField.defaultValue || 0);
+      const numberValue =
+        (typeof engineField.defaultValue === "boolean"
+          ? Number(engineField.defaultValue)
+          : engineField.defaultValue) || 0;
       this._addComment(`Engine Field Set To Default`);
       if (is16BitCType(cType)) {
         this._setConstMemInt16(key, numberValue);
